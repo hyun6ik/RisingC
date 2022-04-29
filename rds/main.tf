@@ -14,16 +14,19 @@ module "rds" {
   max_allocated_storage = 100
 
   db_name  = "rising"
-  username = "hyun6ik"
+  username = "admin"
+  password = "!12345678"
   port     = 3306
 
   create_db_instance = true
   create_monitoring_role = false
   create_db_subnet_group = true
+  create_random_password = false
+  publicly_accessible = true
 
   multi_az               = true
-  subnet_ids             = data.terraform_remote_state.vpc.outputs.database_subnet_ids
-  vpc_security_group_ids = [data.terraform_remote_state.vpc.outputs.default_security_group_id, module.security_group.security_group_id]
+  subnet_ids             = data.terraform_remote_state.vpc.outputs.public_subnet_ids
+  vpc_security_group_ids = [module.security_group.security_group_id]
   parameters = [
     {
       name  = "character_set_client"
@@ -34,8 +37,32 @@ module "rds" {
       value = "utf8mb4"
     },
     {
+      name = "character_set_results"
+      value = "utf8mb4"
+    },
+    {
+      name = "character_set_filesystem"
+      value = "utf8mb4"
+    },
+    {
+      name = "character_set_database"
+      value = "utf8mb4"
+    },
+    {
+      name = "character_set_connection"
+      value = "utf8mb4"
+    },
+    {
       name  = "time_zone"
       value = "asia/seoul"
+    },
+    {
+      name = "collation_server"
+      value = "utf8mb4_general_ci"
+    },
+    {
+      name = "collation_connection"
+      value = "utf8mb4_general_ci"
     }
   ]
 
