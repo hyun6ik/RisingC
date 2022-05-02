@@ -15,7 +15,7 @@ module "rds" {
 
   db_name  = "rising"
   username = "admin"
-  password = "!12345678"
+
   port     = 3306
 
   create_db_instance = true
